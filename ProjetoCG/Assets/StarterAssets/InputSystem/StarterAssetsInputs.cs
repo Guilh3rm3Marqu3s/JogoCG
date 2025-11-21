@@ -20,6 +20,9 @@ namespace StarterAssets
 		public bool cursorLocked = true;
 		public bool cursorInputForLook = true;
 
+		[Header("Interaction")]
+		public bool interact;
+
 #if ENABLE_INPUT_SYSTEM
 		public void OnMove(InputValue value)
 		{
@@ -42,6 +45,11 @@ namespace StarterAssets
 		public void OnSprint(InputValue value)
 		{
 			SprintInput(value.isPressed);
+		}
+
+		public void OnInteract(InputValue value)
+		{
+    		InteractInput(value.isPressed);
 		}
 #endif
 
@@ -74,6 +82,11 @@ namespace StarterAssets
 		private void SetCursorState(bool newState)
 		{
 			Cursor.lockState = newState ? CursorLockMode.Locked : CursorLockMode.None;
+		}
+
+		public void InteractInput(bool newInteractState)
+		{
+    		interact = newInteractState;
 		}
 	}
 	
