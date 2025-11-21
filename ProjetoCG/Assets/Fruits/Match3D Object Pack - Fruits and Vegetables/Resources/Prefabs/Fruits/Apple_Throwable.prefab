@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3216007982960201385}
   - component: {fileID: 4617042565024800936}
   - component: {fileID: 9088936243273337580}
+  - component: {fileID: -4077685434875471528}
   m_Layer: 0
   m_Name: Apple_Throwable
   m_TagString: Untagged
@@ -136,3 +137,20 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.9019292
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-4077685434875471528
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4008610799542497148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8c05854fa17c1844875d999817c05c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  raioDoSom: 20
+  forcaMinimaImpacto: 2
+  inimigoLayer:
+    serializedVersion: 2
+    m_Bits: 64
