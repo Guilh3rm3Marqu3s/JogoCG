@@ -4,9 +4,9 @@ using TMPro; // Necessário para usar TextMeshPro na UI
 public class PlayerThrow : MonoBehaviour
 {
     [Header("Configurações de Arremesso")]
-    public float throwForce = 15f;
-    public Transform holdPoint; // Arraste o objeto HoldPoint da câmera para cá no Inspector
-    public GameObject appleHeldPrefab; // O prefab da maçã (visual/física)
+    public float throwForce = 10f;
+    public Transform holdPoint; 
+    public GameObject appleHeldPrefab;
 
     [Header("Inventário")]
     public int currentApples = 0;
