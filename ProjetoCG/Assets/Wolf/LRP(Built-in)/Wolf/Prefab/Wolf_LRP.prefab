@@ -192,6 +192,8 @@ MonoBehaviour:
   attackRange: 2
   patrolRadius: 20
   howlClip: {fileID: 8300000, guid: 6e044ad784230a141b40f181580e7783, type: 3}
+  damageAmount: 34
+  attackRate: 1.5
   distractedDetectionRange: 3.5
   tempoInvestigando: 4
   minPatrolSpeed: 0.65

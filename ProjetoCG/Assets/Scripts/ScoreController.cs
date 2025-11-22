@@ -1,7 +1,7 @@
 using UnityEngine;
-using UnityEngine.UI; // Required for Slider
+using UnityEngine.UI; 
 using TMPro;
-using StarterAssets;          // Required for Text Mesh Pro
+using StarterAssets; 
 
 public class ScoreController : MonoBehaviour
 {
@@ -18,9 +18,9 @@ public class ScoreController : MonoBehaviour
     [Header("UI References")]
     public Slider CompletionBar;
     public TextMeshProUGUI ScoreText;
-    public GameObject WinScreen; // Optional: Assign a panel to show when winning
+    public GameObject WinScreen; 
     public TextMeshProUGUI WinScoreText;
-    public GameObject LoseScreen; // Optional: Assign a panel to show when losing
+    public GameObject LoseScreen; 
     public TextMeshProUGUI LoseScoreText;
 
     // Internal State
@@ -36,16 +36,15 @@ public class ScoreController : MonoBehaviour
         if (Instance != null && Instance != this) Destroy(gameObject);
         else Instance = this;
         
-        // Initialize timers
+        // IMPORTANTE: Garante que o jogo não comece pausado se você reiniciou a cena
+        Time.timeScale = 1f;
+
         _lastInteractionTime = Time.time;
     }
 
     private void Start()
     {
-        // Automatically count how many interactables are in the scene
         _totalObjectsInScene = FindObjectsOfType<InteractableTrash>().Length;
-        Debug.Log($"Game Started. Total Objects to find: {_totalObjectsInScene}");
-        
         UpdateUI();
     }
 
@@ -53,11 +52,10 @@ public class ScoreController : MonoBehaviour
     {
         if (_isGameOver) return;
 
-        // 1. Fill the bar naturally over 10 minutes
-        // We divide Time.deltaTime by MaxTimeSeconds to get the fraction per second
+        // Enche a barra com o tempo
         _currentCompletion += Time.deltaTime / MaxTimeSeconds;
 
-        // 2. Check for "Time Out" (Bar Full)
+        // Se a barra encher, perde por tempo esgotado
         if (_currentCompletion >= 1.0f)
         {
             _currentCompletion = 1.0f;
@@ -71,64 +69,69 @@ public class ScoreController : MonoBehaviour
     {
         if (_isGameOver) return;
 
-        // --- SCORING LOGIC ---
-        
-        // Factor 1: Base points for the object
         float points = 100f;
-
-        // Factor 2: Time between interactions (The faster, the better)
         float timeSinceLast = Time.time - _lastInteractionTime;
-        // Example: If you find next object in 10s, you get bonus. If 60s, no bonus.
         float speedBonus = Mathf.Clamp(500f - (timeSinceLast * 10f), 0, 500f);
         
         _currentScore += points + speedBonus;
 
-        // Update Logic
         _interactedCount++;
-        _lastInteractionTime = Time.time; // Reset timer for next interaction
+        _lastInteractionTime = Time.time; 
 
-        // --- BAR MECHANIC ---
-        // Reduce the bar (clamped so it doesn't go below 0)
         _currentCompletion = Mathf.Clamp01(_currentCompletion - InteractionReduction);
 
-        Debug.Log($"Object {_interactedCount}/{_totalObjectsInScene} Collected. Score: {_currentScore}");
-
-        // --- WIN CONDITION ---
         if (_interactedCount >= _totalObjectsInScene)
         {
             EndGame(true); // Win
         }
     }
 
+    // --- NOVA FUNÇÃO: Chamada pelo PlayerHealth quando a vida zera ---
+    public void TriggerDeath()
+    {
+        if (_isGameOver) return; // Evita chamar duas vezes
+        Debug.Log("Game Over por Morte!");
+        EndGame(false);
+    }
+
     private void EndGame(bool playerWon)
     {
         _isGameOver = true;
 
+        // 1. TRAVA O JOGO (Física, Movimento, Animações)
+        Time.timeScale = 0f;
+
+        // 2. Destrava o Mouse
         if (playerController != null)
         {
-            playerController.LockControls = true;
+            // Tenta travar o input do script (opcional já que o timeScale faz a maior parte)
+            playerController.enabled = false; 
         }
-
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
-        float barEmptySpace = 1.0f - _currentCompletion;
+        // Calcula bonus final se ganhou
+        if (playerWon)
+        {
+            float barEmptySpace = 1.0f - _currentCompletion;
             float timeBonus = barEmptySpace * 1000f;
             _currentScore += timeBonus;
+        }
 
         int finalScore = Mathf.FloorToInt(_currentScore);
 
+        // 3. Exibe as telas
         if (playerWon)
         {
-            Debug.Log("YOU WIN! Final Score: " + finalScore);
             if(WinScreen) WinScreen.SetActive(true);
-            if (WinScoreText) WinScoreText.text = "Final Score: " + finalScore;
+            if (WinScoreText) WinScoreText.text = "YOU ESCAPED!\nFinal Score: " + finalScore;
         }
         else
         {
-            Debug.Log("GAME OVER! Bar filled up.");
             if(LoseScreen) LoseScreen.SetActive(true);
-            if (LoseScoreText) LoseScoreText.text = "Final Score: " + finalScore;
+            // Aqui você pode customizar a mensagem dependendo se foi Tempo ou Morte,
+            // mas genericamente "Game Over" serve para os dois.
+            if (LoseScoreText) LoseScoreText.text = "GAME OVER\nFinal Score: " + finalScore;
         }
     }
 

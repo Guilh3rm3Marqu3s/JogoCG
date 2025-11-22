@@ -22,6 +22,12 @@ public class WolfController : EnemyBase
     
     [Header("Sons")] 
     public AudioClip howlClip; 
+
+    [Header("Combate")]
+    public int damageAmount = 10;
+    public float attackRate = 1.5f; // Tempo entre ataques do lobo
+    private float nextAttackTime = 0f;
+
     
     [Header("Percepção Reduzida")]
     public float distractedDetectionRange = 3.5f; 
@@ -203,16 +209,48 @@ public class WolfController : EnemyBase
         agent.isStopped = true;
         agent.velocity = Vector3.zero; 
 
-        Vector3 dir = (playerTransform.position - transform.position).normalized;
-        dir.y = 0;
-        if (dir != Vector3.zero)
+        Vector3 direction = (playerTransform.position - transform.position).normalized;
+        direction.y = 0; 
+        
+        if (direction != Vector3.zero)
         {
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * 5f);
+            Quaternion lookRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
         }
 
-        if (Vector3.Angle(transform.forward, dir) < 20f) 
+        float angle = Vector3.Angle(transform.forward, direction);
+        
+        // Verifica tempo e ângulo
+        if (angle < 20f && Time.time >= nextAttackTime) 
         {
+            // 1. Apenas inicia a animação
             animator.SetTrigger("Attack");
+            
+            // NOTA: Removemos o TryDoDamage() daqui!
+            // O dano agora será chamado pela própria animação.
+
+            nextAttackTime = Time.time + attackRate;
+        }
+    }
+
+    public void DealDamageEvent()
+    {
+        // Medida de segurança: O player ainda existe?
+        if (playerTransform == null) return;
+
+        // LÓGICA DE ESQUIVA:
+        // Como passou um tempinho entre o início da animação e a mordida,
+        // conferimos se o player ainda está perto. Se ele correu, o ataque erra.
+        float distance = Vector3.Distance(transform.position, playerTransform.position);
+
+        // Damos uma margem extra (attackRange + 0.5f) para não ser punitivo demais
+        if (distance <= attackRange + 0.5f)
+        {
+            PlayerHealth playerHealth = playerTransform.GetComponent<PlayerHealth>();
+            if (playerHealth != null)
+            {
+                playerHealth.TakeDamage(damageAmount);
+            }
         }
     }
 

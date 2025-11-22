@@ -4,7 +4,7 @@ using TMPro; // Necessário para usar TextMeshPro na UI
 public class PlayerThrow : MonoBehaviour
 {
     [Header("Configurações de Arremesso")]
-    public float throwForce = 10f;
+    public float throwForce = 15f;
     public Transform holdPoint; 
     public GameObject appleHeldPrefab;
 
