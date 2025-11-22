@@ -60,6 +60,9 @@ namespace StarterAssets
 		[Tooltip("Layer mask for interactable objects (optional optimization)")]
 		public LayerMask InteractionLayers;
 
+		[Header("Game State")]
+		public bool LockControls = false;
+
 		// cinemachine
 		private float _cinemachineTargetPitch;
 
@@ -136,6 +139,11 @@ namespace StarterAssets
 
 		private void Update()
 		{
+
+			if (LockControls)
+    		{
+        		return; // Stop reading code below this line
+    		}
 			JumpAndGravity();
 			GroundedCheck();
 			Move();
@@ -144,6 +152,7 @@ namespace StarterAssets
 
 		private void LateUpdate()
 		{
+			if (LockControls) return;
 			CameraRotation();
 		}
 

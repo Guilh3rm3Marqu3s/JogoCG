@@ -20,6 +20,11 @@ public class MenuController : MonoBehaviour
         SceneManager.LoadScene("Terrain");
     }
 
+    public void RestartLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
     public void QuitGame()
     {
         Application.Quit();

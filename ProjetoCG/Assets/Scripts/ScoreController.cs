@@ -1,10 +1,13 @@
 using UnityEngine;
 using UnityEngine.UI; // Required for Slider
-using TMPro;          // Required for Text Mesh Pro
+using TMPro;
+using StarterAssets;          // Required for Text Mesh Pro
 
 public class ScoreController : MonoBehaviour
 {
     public static ScoreController Instance { get; private set; }
+
+    public FirstPersonController playerController;
 
     [Header("Game Settings")]
     [Tooltip("Time in seconds for bar to fill naturally (10 mins = 600)")]
@@ -16,7 +19,9 @@ public class ScoreController : MonoBehaviour
     public Slider CompletionBar;
     public TextMeshProUGUI ScoreText;
     public GameObject WinScreen; // Optional: Assign a panel to show when winning
+    public TextMeshProUGUI WinScoreText;
     public GameObject LoseScreen; // Optional: Assign a panel to show when losing
+    public TextMeshProUGUI LoseScoreText;
 
     // Internal State
     private float _currentCompletion = 0f;
@@ -99,22 +104,31 @@ public class ScoreController : MonoBehaviour
     {
         _isGameOver = true;
 
+        if (playerController != null)
+        {
+            playerController.LockControls = true;
+        }
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        float barEmptySpace = 1.0f - _currentCompletion;
+            float timeBonus = barEmptySpace * 1000f;
+            _currentScore += timeBonus;
+
+        int finalScore = Mathf.FloorToInt(_currentScore);
+
         if (playerWon)
         {
-            // Factor 3: Time Left Bonus (The empty space on the completion bar)
-            float barEmptySpace = 1.0f - _currentCompletion;
-            float timeBonus = barEmptySpace * 1000f; // Big bonus for finishing with low bar
-            _currentScore += timeBonus;
-            
-            Debug.Log("YOU WIN! Final Score: " + _currentScore);
+            Debug.Log("YOU WIN! Final Score: " + finalScore);
             if(WinScreen) WinScreen.SetActive(true);
+            if (WinScoreText) WinScoreText.text = "Final Score: " + finalScore;
         }
         else
         {
-            // Factor 4: If time runs out, score based on what we did
-            // (We already added score as we played, so we just finalize it here)
             Debug.Log("GAME OVER! Bar filled up.");
             if(LoseScreen) LoseScreen.SetActive(true);
+            if (LoseScoreText) LoseScoreText.text = "Final Score: " + finalScore;
         }
     }
 

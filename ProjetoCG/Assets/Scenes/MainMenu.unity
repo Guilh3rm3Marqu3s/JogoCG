@@ -374,7 +374,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -0.000057648, y: -176}
-  m_SizeDelta: {x: 381.9428, y: 79.5829}
+  m_SizeDelta: {x: 400, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1361979593
 MonoBehaviour:
@@ -507,7 +507,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 131}
-  m_SizeDelta: {x: 381.9428, y: 79.5829}
+  m_SizeDelta: {x: 400, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1492641572
 MonoBehaviour:
@@ -662,8 +662,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Fechar
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 59bd9ed18c30fc44898a8238a395f1bd, type: 2}
-  m_sharedMaterial: {fileID: 5983378101909929865, guid: 59bd9ed18c30fc44898a8238a395f1bd, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 2dfb5a04466d36c46ad706f3f7feca59, type: 2}
+  m_sharedMaterial: {fileID: 4189762727937527083, guid: 2dfb5a04466d36c46ad706f3f7feca59, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -687,7 +687,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 45.7
+  m_fontSize: 72
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1071,8 +1071,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Jogar
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 59bd9ed18c30fc44898a8238a395f1bd, type: 2}
-  m_sharedMaterial: {fileID: 5983378101909929865, guid: 59bd9ed18c30fc44898a8238a395f1bd, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 2dfb5a04466d36c46ad706f3f7feca59, type: 2}
+  m_sharedMaterial: {fileID: 4189762727937527083, guid: 2dfb5a04466d36c46ad706f3f7feca59, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1096,7 +1096,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 45.7
+  m_fontSize: 72
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
