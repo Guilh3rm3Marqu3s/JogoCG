@@ -54,6 +54,15 @@ namespace StarterAssets
 		[Tooltip("How far in degrees can you move the camera down")]
 		public float BottomClamp = -90.0f;
 
+		[Header("Interaction")]
+		[Tooltip("How far away can the player reach objects?")]
+		public float InteractionRange = 3.0f;
+		[Tooltip("Layer mask for interactable objects (optional optimization)")]
+		public LayerMask InteractionLayers;
+
+		[Header("Game State")]
+		public bool LockControls = false;
+
 		// cinemachine
 		private float _cinemachineTargetPitch;
 
@@ -130,14 +139,47 @@ namespace StarterAssets
 
 		private void Update()
 		{
+
+			if (LockControls)
+    		{
+        		return; // Stop reading code below this line
+    		}
 			JumpAndGravity();
 			GroundedCheck();
 			Move();
+			InteractionCheck();
 		}
 
 		private void LateUpdate()
 		{
+			if (LockControls) return;
 			CameraRotation();
+		}
+
+		private void InteractionCheck()
+		{
+			// If the interact button (E) was pressed this frame
+			if (_input.interact)
+			{
+				// Immediately consume the input so it doesn't fire multiple times
+				_input.interact = false;
+
+				// Cast a ray from the center of the camera
+				Ray ray = new Ray(_mainCamera.transform.position, _mainCamera.transform.forward);
+				RaycastHit hit;
+
+				// Check if we hit something within range
+				if (Physics.Raycast(ray, out hit, InteractionRange, InteractionLayers))
+				{
+					// Try to find the InteractableObject script on the thing we hit
+					InteractableTrash interactable = hit.collider.GetComponent<InteractableTrash>();
+					
+					if (interactable != null)
+					{
+						interactable.OnInteract();
+					}
+				}
+			}
 		}
 
 		private void GroundedCheck()
