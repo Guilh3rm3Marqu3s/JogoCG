@@ -14,7 +14,7 @@ public class InteractableTrash : MonoBehaviour
 
         if (PickupSound != null)
         {
-            // Creates a temporary audio source at the object's position
+            // Cria um fonte de audio temporaria na posicao do objeto
             AudioSource.PlayClipAtPoint(PickupSound, transform.position);
         }
         

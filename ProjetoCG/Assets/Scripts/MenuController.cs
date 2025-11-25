@@ -20,6 +20,16 @@ public class MenuController : MonoBehaviour
         SceneManager.LoadScene("Terrain");
     }
 
+    public void Return()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    public void Controls()
+    {
+        SceneManager.LoadScene("Controls");
+    }
+
     public void RestartLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
