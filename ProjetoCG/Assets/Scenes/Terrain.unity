@@ -3939,7 +3939,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerController: {fileID: 240242004}
-  MaxTimeSeconds: 5
+  MaxTimeSeconds: 150
   InteractionReduction: 0.1
   CompletionBar: {fileID: 31154884}
   ScoreText: {fileID: 862702316}
